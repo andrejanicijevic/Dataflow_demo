@@ -1,0 +1,13 @@
+let
+  Source = AzureStorage.Blobs("https://<xxxxx>.blob.core.windows.net/"),
+  Navigation = Source{[Name = "<xxxx>"]}[Data],
+  #"Navigation 1" = Navigation{[#"Folder Path" = "https://<xxxxx>.blob.core.windows.net/<xxxxxxxx>/", Name = "Integration.csv"]}[Content],
+  #"Imported CSV" = Csv.Document(#"Navigation 1", [Delimiter = ";", Columns = 10, QuoteStyle = QuoteStyle.None]),
+  #"Promoted headers" = Table.PromoteHeaders(#"Imported CSV", [PromoteAllScalars = true]),
+  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"ProductKey", Int64.Type}, {"OrderDateKey", Int64.Type}, {"SalesTerritoryKey", Int64.Type}, {"OrderDate", type text}, {"OrderTime", type text}, {"OrderDate.3", type text}, {"Year", Int64.Type}, {"YearMonth", Int64.Type}, {"Channel", type text}, {"Amount", Int64.Type}}),
+  #"Removed columns" = Table.RemoveColumns(#"Changed column type", {"OrderDate.3", "OrderTime"}),
+  TransformColumnTypes = Table.TransformColumnTypes(#"Removed columns", {{"OrderDate", type date}}),
+  ReplaceErrorValues = Table.ReplaceErrorValues(TransformColumnTypes, {{"OrderDate", #date(2010, 5, 4)}}),
+  #"TransformColumnTypes 1" = Table.TransformColumnTypes(ReplaceErrorValues, {{"YearMonth", type text}, {"Year", type text}, {"OrderDateKey", type text}, {"ProductKey", type text}, {"SalesTerritoryKey", type text}})
+in
+  #"TransformColumnTypes 1"

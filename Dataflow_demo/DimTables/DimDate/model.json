@@ -1,0 +1,94 @@
+{
+    "name": "DimDate",
+    "description": "Manually created cdm",
+    "version": "1.0",
+    "culture": "en-US",
+    
+    "entities": [{
+            "$type": "LocalEntity",
+            "name": "DimDate",
+            "description": "",
+            
+            "attributes": [{
+                    "name": "DateKey",
+                    "dataType": "string"
+                }, {
+                    "name": "FullDateAlternateKey",
+                    "dataType": "datetime"
+                }, {
+                    "name": "DayNumberOfWeek",
+                    "dataType": "string"
+                },
+				{
+                    "name": "EnglishDayNameOfWeek",
+                    "dataType": "string"
+                },
+				{
+                    "name": "SpanishDayNameOfWeek",
+                    "dataType": "string"
+                },
+				{
+                    "name": "FrenchDayNameOfWeek",
+                    "dataType": "string"
+                },
+				{
+                    "name": "DayNumberOfMonth",
+                    "dataType": "string"
+                },
+				{
+                    "name": "DayNumberOfYear",
+                    "dataType": "string"
+                },
+				{
+                    "name": "WeekNumberOfYear",
+                    "dataType": "string"
+                },
+				{
+                    "name": "EnglishMonthName",
+                    "dataType": "string"
+                },
+				{
+                    "name": "SpanishMonthName",
+                    "dataType": "string"
+                },
+				{
+                    "name": "FrenchMonthName",
+                    "dataType": "string"
+                },
+				{
+                    "name": "MonthNumberOfYear",
+                    "dataType": "string"
+                },
+				{
+                    "name": "CalendarQuarter",
+                    "dataType": "string"
+                },
+				{
+                    "name": "CalendarYear",
+                    "dataType": "string"
+                },
+				{
+                    "name": "CalendarSemester",
+                    "dataType": "string"
+                },
+				{
+                    "name": "FiscalQuarter",
+                    "dataType": "string"
+                },
+				{
+                    "name": "FiscalYear",
+                    "dataType": "int64"
+                },
+				{
+                    "name": "FiscalSemester",
+                    "dataType": "string"
+                },
+            ],
+            "partitions": [{
+                    "name": "AddPartition",
+                    "location": "https://powerbiadls.dfs.core.windows.net/powerbi/DemoPowerBI/DimTables/DimDate/DimDate.csv"
+                }
+				]
+        }
+    ]
+}

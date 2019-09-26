@@ -1,0 +1,39 @@
+{
+    "name": "DimSalesTerritory",
+    "description": "Manually created cdm",
+    "version": "1.0",
+    "culture": "en-US",
+    
+    "entities": [{
+            "$type": "LocalEntity",
+            "name": "DimSalesTerritory",
+            "description": "",
+            
+            "attributes": [{
+                    "name": "SalesTerritoryKey",
+                    "dataType": "string"
+                }, {
+                    "name": "SalesTerritoryAlternateKey",
+                    "dataType": "string"
+                }, {
+                    "name": "SalesTerritoryRegion",
+                    "dataType": "string"
+                },
+				{
+                    "name": "SalesTerritoryCountry",
+                    "dataType": "string"
+                },
+				{
+                    "name": "SalesTerritoryGroup",
+                    "dataType": "string"
+                }
+                
+            ],
+            "partitions": [{
+                    "name": "AddPartition",
+                    "location": "https://powerbiadls.dfs.core.windows.net/powerbi/DemoPowerBI/DimTables/DimSalesTerritory/DimSalesTerritory.csv"
+                }
+				]
+        }
+    ]
+}

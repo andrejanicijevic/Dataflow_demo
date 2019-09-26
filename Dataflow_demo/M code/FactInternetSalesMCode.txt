@@ -1,0 +1,18 @@
+let
+  Source = Sql.Databases("<yourdatalakename>.database.windows.net"),
+  Navigation = Source{[Name = "AdventureworksDW2016CTP3"]}[Data],
+  #"Navigation 1" = Navigation{[Schema = "dbo", Item = "FactInternetSales"]}[Data],
+  #"Choose columns" = Table.SelectColumns(#"Navigation 1", {"ProductKey", "OrderDateKey", "SalesTerritoryKey", "TotalProductCost", "SalesAmount", "OrderDate", "ShipDate"}),
+  #"Changed column type" = Table.TransformColumnTypes(#"Choose columns", {{"TotalProductCost", type number}, {"SalesAmount", type number}}),
+  #"Multiplied Column" = Table.TransformColumns(#"Changed column type", {{"TotalProductCost", each _ * -1, type number}}),
+  #"Inserted addition" = Table.AddColumn(#"Multiplied Column", "GrossProfit", each [SalesAmount] + [TotalProductCost], type number),
+  #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Inserted addition", {"ProductKey", "OrderDateKey", "SalesTerritoryKey", "OrderDate", "ShipDate"}, "Attribute", "Value"),
+  #"Renamed columns" = Table.RenameColumns(#"Unpivoted Columns", {{"Attribute", "Category"}, {"Value", "Amount"}}),
+  #"Changed column type 1" = Table.TransformColumnTypes(#"Renamed columns", {{"Amount", Currency.Type}}),
+  #"Inserted Year" = Table.AddColumn(#"Changed column type 1", "Year", each Date.Year([OrderDate]), Int64.Type),
+  #"Added Custom Column" = Table.AddColumn(#"Inserted Year", "Custom", each Text.Combine({DateTime.ToText([OrderDate], "yyyy"), DateTime.ToText([OrderDate], "MM")}), type text),
+  #"Renamed Columns" = Table.RenameColumns(#"Added Custom Column", {{"Custom", "YearMonth"}}),
+  #"Inserted Literal" = Table.AddColumn(#"Renamed Columns", "Literal", each "Internet", type text),
+  #"Renamed Columns1" = Table.RenameColumns(#"Inserted Literal", {{"Literal", "Channel"}})
+in
+  #"Renamed Columns1"
